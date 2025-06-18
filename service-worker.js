@@ -1,14 +1,13 @@
 
 const CACHE_NAME = 'ai-text-enhancer-pl-v1';
 const urlsToCache = [
-  '/',
+  '/', // Represents index.html at the root
   'index.html',
-  // Add other static assets like CSS, JS bundles, images if not CDN-hosted
-  // '/manifest.json', // Manifest is usually fetched by browser directly
-  // '/icon-192x192.png',
-  // '/icon-512x512.png',
+  'metadata.json', // Cache the PWA manifest
+  'icon-192x192.png', // Cache PWA icon
+  'icon-512x512.png', // Cache PWA icon
   // Note: Vite generates hashed assets, so dynamic caching or a build tool plugin is better for production.
-  // For this example, we'll keep it simple.
+  // For this example, we'll keep it simple. Other assets like index.tsx will be cached on first fetch by the fetch handler.
 ];
 
 self.addEventListener('install', event => {
@@ -16,7 +15,9 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache');
-        return cache.addAll(urlsToCache.map(url => new Request(url, { cache: 'reload' }))); // Force reload to avoid cached opaque responses from CDN
+        // Use { cache: 'reload' } for all initial assets to ensure fresh copies are fetched, especially during development or updates.
+        const requests = urlsToCache.map(url => new Request(url, { cache: 'reload' }));
+        return cache.addAll(requests);
       })
       .catch(err => {
         console.error('Failed to open cache or add urls to cache: ', err);
@@ -34,13 +35,14 @@ self.addEventListener('fetch', event => {
         return fetch(event.request).then(
           fetchResponse => {
             // Check if we received a valid response
-            if(!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic' && fetchResponse.type !== 'cors') {
+            if(!fetchResponse || fetchResponse.status !== 200 || (fetchResponse.type !== 'basic' && fetchResponse.type !== 'cors')) {
               // Check for CDN resources which might be opaque
-              if (fetchResponse && fetchResponse.type === 'opaque' && event.request.url.startsWith('https://cdn.tailwindcss.com')) {
-                // Don't cache opaque responses directly as they have 0 status
+              if (fetchResponse && fetchResponse.type === 'opaque' && 
+                  (event.request.url.startsWith('https://cdn.tailwindcss.com') || event.request.url.startsWith('https://esm.sh'))) {
+                // Don't cache opaque responses directly as they have 0 status and limited utility
                 return fetchResponse;
               }
-              return fetchResponse;
+              return fetchResponse; // Return non-200s, etc., without caching
             }
 
             // IMPORTANT: Clone the response. A response is a stream
@@ -59,9 +61,12 @@ self.addEventListener('fetch', event => {
             return fetchResponse;
           }
         ).catch(err => {
-            console.error('Fetch failed; returning offline page instead.', err);
-            // Optionally, return a fallback offline page:
-            // return caches.match('/offline.html'); 
+            console.error('Fetch failed for: ', event.request.url, err);
+            // Optionally, return a fallback offline page if one is cached:
+            // if (event.request.mode === 'navigate') { // Only for page navigations
+            //   return caches.match('/offline.html'); 
+            // }
+            // For other assets, failing might be acceptable or need specific handling
         });
       })
   );
