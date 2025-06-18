@@ -1,0 +1,22 @@
+{
+  "name": "AI Text Enhancer PL",
+  "description": "Aplikacja internetowa do ulepszania tekstu przy użyciu AI Gemini. Umożliwia dostosowanie tonu, zastosowania, długości i stylu językowego.",
+  "display": "standalone",
+  "start_url": ".",
+  "short_name": "TextEnhancer",
+  "theme_color": "#0F172A",
+  "background_color": "#0F172A",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "requestFramePermissions": []
+}

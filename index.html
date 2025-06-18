@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" /> <!-- Placeholder icon, replace with your actual icon -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0F172A" />
+  <title>AI Text Enhancer PL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif; /* A modern, clean font */
+      background-color: #0F172A; /* slate-900 */
+      color: #E2E8F0; /* slate-200 */
+    }
+    /* Custom scrollbar for a more futuristic feel */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1E293B; /* slate-800 */
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #06B6D4; /* cyan-500 */
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0891B2; /* cyan-600 */
+    }
+    .neon-glow-cyan {
+      box-shadow: 0 0 5px #06B6D4, 0 0 10px #06B6D4, 0 0 15px #06B6D4;
+    }
+    .neon-text-cyan {
+      color: #06B6D4; /* cyan-500 */
+      text-shadow: 0 0 5px #06B6D4, 0 0 10px #06B6D4;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.5.1",
+    "diff": "https://esm.sh/diff@^8.0.2",
+    "jspdf": "https://esm.sh/jspdf@^3.0.1",
+    "docx": "https://esm.sh/docx@^9.5.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
