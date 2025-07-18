@@ -1,4 +1,3 @@
-
 import { Tone, Usage, ExpectedLength, LanguageStyle, SelectOption } from './types';
 
 export const TONE_OPTIONS: SelectOption[] = Object.entries(Tone).map(([_, label]) => ({ value: label, label }));
@@ -44,4 +43,4 @@ export const UI_TEXT = {
 // The instructions specify process.env.API_KEY
 export const API_KEY = process.env.API_KEY;
 
-export const GEMINI_MODEL_TEXT = 'gemini-2.5-flash-preview-04-17';
+export const GEMINI_MODEL_TEXT = 'gemini-2.5-flash';

@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { API_KEY, GEMINI_MODEL_TEXT } from '../constants';
 
@@ -19,7 +18,7 @@ export const callGeminiApi = async (prompt: string): Promise<string> => {
     const client = getAiClient();
     const response: GenerateContentResponse = await client.models.generateContent({
       model: GEMINI_MODEL_TEXT,
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: prompt,
       // Not using thinkingConfig here for general text enhancement.
       // config: {
       //   temperature: 0.7, // Example, adjust as needed
